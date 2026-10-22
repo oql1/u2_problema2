@@ -1,6 +1,9 @@
-import EmptyState from './EmptyState.tsx';
+import { usePokedex } from "../contexts/PokedexContext.ts";
+import EmptyState from "./EmptyState.tsx";
+import RegistryItem from "./RegistryItem.tsx";
 
 export default function RegistryList() {
+  const { entries } = usePokedex();
   return (
     <section className="panel list-panel" aria-labelledby="list-title">
       <div className="section-heading">
@@ -11,7 +14,13 @@ export default function RegistryList() {
         </div>
       </div>
       <div className="ticket-list">
-        <EmptyState />
+        {entries.length > 0 ? (
+          entries.map((entry) => (
+            <RegistryItem key={entry.id} entry={entry}></RegistryItem>
+          ))
+        ) : (
+          <EmptyState />
+        )}
       </div>
     </section>
   );

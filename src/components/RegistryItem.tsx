@@ -1,24 +1,38 @@
-const exampleSprite = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png';
+import { usePokedex } from "../contexts/PokedexContext";
+import type { PokemonEntry } from "../types";
 
-export default function RegistryItem() {
+export interface RegistryItemProps {
+  entry: PokemonEntry;
+}
+
+export default function RegistryItem({ entry }: RegistryItemProps) {
+  const { deleteEntry } = usePokedex();
   return (
     <article className="ticket">
       <div className="ticket-top">
-        <span className="ticket-id">Registro de ejemplo</span>
+        <span className="ticket-id">{entry.entryId}</span>
         <div className="badges">
-          <span className="badge type-electric">electric</span>
-          <span className="badge role-titular">Titular</span>
+          <span className={`badge type-${entry.type}`}>{entry.type}</span>
+          <span className={`badge role-${entry.role}`}>{entry.role}</span>
         </div>
       </div>
       <div className="preview">
-        <img src={exampleSprite} alt="" width={72} height={72} />
+        <img src={entry.image} alt="" width={72} height={72} />
         <div>
-          <h3>Chispa</h3>
-          <p className="requester">#25 pikachu</p>
+          <h3>{entry.nickname}</h3>
+          <p className="requester">
+            #{entry.id} {entry.name}
+          </p>
         </div>
       </div>
       <div className="ticket-actions">
-        <button className="button danger" type="button">Eliminar</button>
+        <button
+          className="button danger"
+          type="button"
+          onClick={() => deleteEntry(entry.entryId)}
+        >
+          Eliminar
+        </button>
       </div>
     </article>
   );
